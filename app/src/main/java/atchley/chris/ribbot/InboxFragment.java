@@ -17,6 +17,7 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -55,8 +56,13 @@ public class InboxFragment extends ListFragment {
                     }
 
 
-                    MessageAdapter adapter  = new MessageAdapter(getListView().getContext(), mMessages);
-                    setListAdapter(adapter);
+                    if (getListView().getAdapter() == null) {
+                        MessageAdapter adapter = new MessageAdapter(getListView().getContext(), mMessages);
+                        setListAdapter(adapter);
+                    } else {
+                        //refill adapter
+                        ((MessageAdapter) getListView().getAdapter()).refill(mMessages);
+                    }
                 }
             }
         });
@@ -71,18 +77,34 @@ public class InboxFragment extends ListFragment {
         ParseFile file = message.getParseFile(ParseConstants.KEY_FILE);
         Uri fileUri = Uri.parse(file.getUrl());
 
-        if (messageType.equals(ParseConstants.TYPE_IMAGE)){
+        if (messageType.equals(ParseConstants.TYPE_IMAGE)) {
             //view image
             Intent intent = new Intent(getActivity(), ViewImageActivity.class);
             intent.setData(fileUri);
             startActivity(intent);
-        }
-        else {
+        } else {
             //view video
             Intent intent = new Intent(Intent.ACTION_VIEW, fileUri);
-            intent.setDataAndType(fileUri,"video/*");
+            intent.setDataAndType(fileUri, "video/*");
             startActivity(intent);
         }
+
+        //delete message
+        List<String> ids = message.getList(ParseConstants.KEY_RECIPIENT_IDS);
+
+        if (ids.size() == 1) {
+            //last recipient-delete whole thing
+            message.deleteInBackground();
+        } else {
+            //remove recipient and save
+            ids.remove(ParseUser.getCurrentUser().getObjectId());
+            ArrayList<String> idsToRemove = new ArrayList<String>();
+            idsToRemove.add(ParseUser.getCurrentUser().getObjectId());
+
+            message.removeAll(ParseConstants.KEY_RECIPIENT_IDS, idsToRemove);
+            message.saveInBackground();
+        }
+
     }
 }
 
