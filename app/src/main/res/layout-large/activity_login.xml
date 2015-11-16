@@ -1,33 +1,36 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout style="@style/AuthBackground"
+                xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                tools:context="atchley.chris.ribbot.LoginActivity"
-    style="@style/AuthBackground">
+                tools:context="atchley.chris.ribbot.LoginActivity">
 
     <ImageView
         android:id="@+id/background_image"
-        android:src="@drawable/background"
-        style="@style/AuthBackgroundImage"/>
+        style="@style/AuthBackgroundImage"
+        android:src="@drawable/background"/>
 
     <TextView
         android:id="@+id/title"
-        android:text="@string/app_name"
-        style="@style/AuthTitle"/>
+        style="@style/AuthTitle"
+        android:layout_marginTop="180dp"
+        android:text="@string/app_name"/>
 
     <TextView
         android:id="@+id/subTitle"
-        android:text="@string/subtitle"
-        style="@style/AuthSubTitle"/>
+        style="@style/AuthSubTitle"
+        android:text="@string/subtitle"/>
 
     <LinearLayout
         android:id="@+id/editTextLayout"
-        style="@style/AuthFieldContainer">
+        style="@style/AuthFieldContainer"
+        android:layout_width="400dp"
+        android:layout_centerHorizontal="true">
 
         <EditText
             android:id="@+id/usernameField"
-            android:hint="@string/username_hint"
-            style="@style/AuthEditText"/>
+            style="@style/AuthEditText"
+            android:hint="@string/username_hint"/>
 
         <EditText
             android:id="@+id/passwordField"
@@ -41,11 +44,11 @@
 
     <Button
         android:id="@+id/loginButton"
-        android:text="@string/login_button_label"
         style="@style/AuthButton"
-
-    android:layout_alignParentLeft = "true"
-    android:layout_below= "@+id/editTextLayout"/>
+        android:layout_width="400dp"
+        android:layout_below="@+id/editTextLayout"
+        android:layout_centerHorizontal="true"
+        android:text="@string/login_button_label"/>
 
     <TextView
         android:id="@+id/signUpText"

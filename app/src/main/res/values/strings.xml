@@ -37,6 +37,7 @@
     <string name="error_selecting_file_title">We\'re Sorry!</string>
     <string name="success_message">Message Sent!</string>
     <string name="error_sending_message">There was an error sending you message. Please try again.</string>
+    <string name="cancel_button_label">CANCEL</string>
 
     <string-array name="camera_choices">
         <item>Take Picture</item>
@@ -46,5 +47,6 @@
     </string-array>
     <string name="title_activity_view_image">Ribbot</string>
     <string name="subtitle">A Treehouse Project</string>
+    <string name="content_desc_button_divider">Button divider</string>
 
 </resources>
