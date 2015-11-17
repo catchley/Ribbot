@@ -1,4 +1,4 @@
-package atchley.chris.ribbot;
+package atchley.chris.ribbot.ui;
 
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -13,6 +13,8 @@ import android.widget.TextView;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
+
+import atchley.chris.ribbot.R;
 
 public class LoginActivity extends AppCompatActivity {
 

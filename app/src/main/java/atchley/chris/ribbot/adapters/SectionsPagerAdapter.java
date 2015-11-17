@@ -1,4 +1,4 @@
-package atchley.chris.ribbot;
+package atchley.chris.ribbot.adapters;
 
 /**
  * Created by Chris on 11/4/2015.
@@ -10,6 +10,10 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import java.util.Locale;
+
+import atchley.chris.ribbot.R;
+import atchley.chris.ribbot.ui.FriendsFragment;
+import atchley.chris.ribbot.ui.InboxFragment;
 
 /**
  * A {@link FragmentPagerAdapter} that returns a fragment corresponding to

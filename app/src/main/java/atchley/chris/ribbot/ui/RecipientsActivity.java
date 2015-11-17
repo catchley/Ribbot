@@ -1,4 +1,4 @@
-package atchley.chris.ribbot;
+package atchley.chris.ribbot.ui;
 
 import android.app.AlertDialog;
 import android.net.Uri;
@@ -24,6 +24,10 @@ import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import atchley.chris.ribbot.utils.FileHelper;
+import atchley.chris.ribbot.utils.ParseConstants;
+import atchley.chris.ribbot.R;
 
 public class RecipientsActivity extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package atchley.chris.ribbot;
+package atchley.chris.ribbot.ui;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -26,6 +26,10 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+
+import atchley.chris.ribbot.utils.ParseConstants;
+import atchley.chris.ribbot.R;
+import atchley.chris.ribbot.adapters.SectionsPagerAdapter;
 
 public class MainActivity extends AppCompatActivity implements ActionBar.TabListener {
 

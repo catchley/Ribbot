@@ -1,4 +1,4 @@
-package atchley.chris.ribbot;
+package atchley.chris.ribbot.ui;
 
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +11,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.Timer;
 import java.util.TimerTask;
+
+import atchley.chris.ribbot.R;
 
 public class ViewImageActivity extends AppCompatActivity {
 

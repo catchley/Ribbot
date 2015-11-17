@@ -1,10 +1,9 @@
-package atchley.chris.ribbot;
+package atchley.chris.ribbot.ui;
 
 import android.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -19,6 +18,9 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.util.List;
+
+import atchley.chris.ribbot.utils.ParseConstants;
+import atchley.chris.ribbot.R;
 
 public class EditFriendsActivity extends AppCompatActivity {
 

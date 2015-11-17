@@ -1,4 +1,4 @@
-package atchley.chris.ribbot;
+package atchley.chris.ribbot.ui;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
@@ -7,18 +7,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
 
 import java.util.List;
+
+import atchley.chris.ribbot.utils.ParseConstants;
+import atchley.chris.ribbot.R;
 
 /**
  * Created by Chris on 11/4/2015.

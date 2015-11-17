@@ -1,4 +1,4 @@
-package atchley.chris.ribbot;
+package atchley.chris.ribbot.utils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;

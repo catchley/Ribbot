@@ -1,4 +1,4 @@
-package atchley.chris.ribbot;
+package atchley.chris.ribbot.utils;
 
 /**
  * Created by Chris on 11/5/2015.
