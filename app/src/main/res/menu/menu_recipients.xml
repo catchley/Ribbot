@@ -2,10 +2,11 @@
       xmlns:app="http://schemas.android.com/apk/res-auto"
       xmlns:tools="http://schemas.android.com/tools"
       tools:context="atchley.chris.ribbot.RecipientsActivity">
-    <item android:id="@+id/action_send"
-          android:title="@string/menu_send_label"
-          android:orderInCategory="100"
-          app:showAsAction="always"
-          android:visible="false"
-        android:icon="@drawable/ic_action_send_now"/>
+    <item
+        android:id="@+id/action_send"
+        android:icon="@drawable/ic_menu_send"
+        android:orderInCategory="100"
+        android:title="@string/menu_send_label"
+        android:visible="false"
+        app:showAsAction="always"/>
 </menu>

@@ -1,43 +1,31 @@
 package atchley.chris.ribbot;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.Toast;
+
+import com.parse.ParseUser;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
-
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Environment;
-import android.provider.MediaStore;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.os.Bundle;
-import android.support.v4.view.ViewPager;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Toast;
-
-import com.parse.FindCallback;
-import com.parse.Parse;
-import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
-import com.parse.ParseUser;
 
 public class MainActivity extends AppCompatActivity implements ActionBar.TabListener {
 
@@ -50,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
 
     public static final int MEDIA_TYPE_IMAGE = 4;
     public static final int MEDIA_TYPE_VIDEO = 5;
-    public static final int FILE_SIZE_LIMIT = 1024*1024*10;  // 10MB
+    public static final int FILE_SIZE_LIMIT = 1024 * 1024 * 10;  // 10MB
 
     protected Uri mMediaUri;
 
@@ -216,12 +204,10 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
             // this tab is selected.
             actionBar.addTab(
                     actionBar.newTab()
-                            .setText(mSectionsPagerAdapter.getPageTitle(i))
+                            .setIcon(mSectionsPagerAdapter.getIcon(i))
                             .setTabListener(this));
         }
     }
-
-
 
 
     @Override
@@ -243,7 +229,7 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
                     InputStream inputStream = null;
 
                     try {
-                        inputStream= getContentResolver().openInputStream(mMediaUri);
+                        inputStream = getContentResolver().openInputStream(mMediaUri);
                         fileSize = inputStream.available();
                     } catch (FileNotFoundException e) {
                         Toast.makeText(this, R.string.error_opening_file, Toast.LENGTH_LONG).show();
@@ -251,47 +237,43 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
                     } catch (IOException e) {
                         Toast.makeText(this, R.string.error_opening_file, Toast.LENGTH_LONG).show();
                         return;
-                    }
-                    finally {
+                    } finally {
                         try {
                             inputStream.close();
                         } catch (IOException e) {
-                           //This is intentionally blank.
+                            //This is intentionally blank.
                         }
                     }
-                    if(fileSize >= FILE_SIZE_LIMIT){
+                    if (fileSize >= FILE_SIZE_LIMIT) {
                         Toast.makeText(this, R.string.error_file_size_too_large, Toast.LENGTH_LONG).show();
                         return;
                     }
                 }
-            }
-            else {
+            } else {
 
-                    Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-                    mediaScanIntent.setData(mMediaUri);
-                    sendBroadcast(mediaScanIntent);
-                }
+                Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                mediaScanIntent.setData(mMediaUri);
+                sendBroadcast(mediaScanIntent);
+            }
 
             Intent recipientsIntent = new Intent(this, RecipientsActivity.class);
             recipientsIntent.setData(mMediaUri);
 
             String fileType;
-            if(requestCode == PICK_PHOTO_REQUEST|| requestCode==TAKE_PHOTO_REQUEST){
-                fileType =ParseConstants.TYPE_IMAGE;
-            }
-            else{
+            if (requestCode == PICK_PHOTO_REQUEST || requestCode == TAKE_PHOTO_REQUEST) {
+                fileType = ParseConstants.TYPE_IMAGE;
+            } else {
                 fileType = ParseConstants.TYPE_VIDEO;
             }
 
-            recipientsIntent.putExtra(ParseConstants.KEY_FILE_TYPE,fileType );
+            recipientsIntent.putExtra(ParseConstants.KEY_FILE_TYPE, fileType);
             startActivity(recipientsIntent);
 
 
-
-            } else if (resultCode != RESULT_CANCELED) {
-                Toast.makeText(this, getString(R.string.general_error), Toast.LENGTH_LONG).show();
-            }
+        } else if (resultCode != RESULT_CANCELED) {
+            Toast.makeText(this, getString(R.string.general_error), Toast.LENGTH_LONG).show();
         }
+    }
 
 
     private void navigateToLogin() {
