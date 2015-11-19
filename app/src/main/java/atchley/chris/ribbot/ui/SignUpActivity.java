@@ -14,6 +14,7 @@ import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 
 import atchley.chris.ribbot.R;
+import atchley.chris.ribbot.RibbotApplication;
 
 public class SignUpActivity extends AppCompatActivity {
 
@@ -74,6 +75,8 @@ public class SignUpActivity extends AppCompatActivity {
                         @Override
                         public void done(ParseException e) {
                             if(e == null){
+
+                                RibbotApplication.updateParseInstallation(ParseUser.getCurrentUser());
                                 //success
                                 Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

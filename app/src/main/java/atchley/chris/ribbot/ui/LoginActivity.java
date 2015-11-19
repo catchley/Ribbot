@@ -15,6 +15,7 @@ import com.parse.ParseException;
 import com.parse.ParseUser;
 
 import atchley.chris.ribbot.R;
+import atchley.chris.ribbot.RibbotApplication;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -72,6 +73,8 @@ public class LoginActivity extends AppCompatActivity {
                         public void done(ParseUser user, ParseException e) {
                             if(e == null){
                                 //success
+
+                                RibbotApplication.updateParseInstallation(user);
                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);

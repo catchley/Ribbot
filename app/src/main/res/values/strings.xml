@@ -48,5 +48,6 @@
     <string name="title_activity_view_image">Ribbot</string>
     <string name="subtitle">A Treehouse Project</string>
     <string name="content_desc_button_divider">Button divider</string>
+    <string name="push_message">"You have a new Ribbot message from %s!"</string>
 
 </resources>
