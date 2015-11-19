@@ -8,7 +8,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -19,6 +22,7 @@ import com.parse.SaveCallback;
 
 import java.util.List;
 
+import atchley.chris.ribbot.adapters.UserAdapter;
 import atchley.chris.ribbot.utils.ParseConstants;
 import atchley.chris.ribbot.R;
 
@@ -29,17 +33,20 @@ public class EditFriendsActivity extends AppCompatActivity {
     protected List<ParseUser> mUsers;
     protected ParseRelation<ParseUser> mFriendsRelation;
     protected ParseUser mCurrentUser;
-    public ListView myList;
+    protected GridView mGridView;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_friends);
+        setContentView(R.layout.user_grid);
 
-        myList = (ListView)findViewById(R.id.friends_search_list);
-        myList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        mGridView = (GridView) findViewById(R.id.friendsGrid);
+        mGridView.setChoiceMode(GridView.CHOICE_MODE_MULTIPLE);
+        mGridView.setOnItemClickListener(mOnItemClickListner);
 
+        TextView emptyTextView = (TextView) findViewById(android.R.id.empty);
+        mGridView.setEmptyView(emptyTextView);
     }
 
     @Override
@@ -65,35 +72,17 @@ public class EditFriendsActivity extends AppCompatActivity {
                         i++;
                     }
 
-                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(EditFriendsActivity.this,
-                            android.R.layout.simple_list_item_checked,
-                            usernames);
-                    //final ListView myList = (ListView) findViewById(R.id.friends_search_list);
-                    myList.setAdapter(adapter);
-                    myList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    if (mGridView.getAdapter() == null) {
+                        UserAdapter adapter = new UserAdapter(EditFriendsActivity.this, mUsers);
 
-                            if (myList.isItemChecked(position)) {
-                                //add friends
-                                mFriendsRelation.add(mUsers.get(position));
-                            } else {
-                                //remove friend
-                                mFriendsRelation.remove(mUsers.get(position));
-                            }
+                        mGridView.setAdapter(adapter);
+                    } else {
+                        ((UserAdapter) mGridView.getAdapter()).refill(mUsers);
 
-                            mCurrentUser.saveInBackground(new SaveCallback() {
-                                @Override
-                                public void done(ParseException e) {
-                                    if (e != null) {
-                                        Log.e(TAG, e.getMessage());
-                                    }
-                                }
-                            });
+                    }
 
 
-                        }
-                    });
+//
 
                     addFriendCheckmarks();
 
@@ -128,27 +117,57 @@ public class EditFriendsActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void addFriendCheckmarks(){
+    private void addFriendCheckmarks() {
         mFriendsRelation.getQuery().findInBackground(new FindCallback<ParseUser>() {
             @Override
             public void done(List<ParseUser> friends, ParseException e) {
-                if(e == null){
+                if (e == null) {
                     //list returned-look for a match
-                    for(int i =0; i<mUsers.size(); i++){
+                    for (int i = 0; i < mUsers.size(); i++) {
                         ParseUser user = mUsers.get(i);
 
-                        for(ParseUser friend : friends){
-                            if(friend.getObjectId().equals(user.getObjectId())){
-                                myList.setItemChecked(i, true);
+                        for (ParseUser friend : friends) {
+                            if (friend.getObjectId().equals(user.getObjectId())) {
+                                mGridView.setItemChecked(i, true);
                             }
                         }
                     }
-                }
-                else{
+                } else {
                     Log.e(TAG, e.getMessage());
                 }
             }
         });
     }
+
+
+    protected AdapterView.OnItemClickListener mOnItemClickListner = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+            ImageView checkImageView = (ImageView) view.findViewById(R.id.checkImageView);
+
+            if (mGridView.isItemChecked(position)) {
+                //add friends
+                mFriendsRelation.add(mUsers.get(position));
+                checkImageView.setVisibility(view.VISIBLE);
+            } else {
+                //remove friend
+                mFriendsRelation.remove(mUsers.get(position));
+                checkImageView.setVisibility(view.INVISIBLE);
+            }
+
+            mCurrentUser.saveInBackground(new SaveCallback() {
+                @Override
+                public void done(ParseException e) {
+                    if (e != null) {
+                        Log.e(TAG, e.getMessage());
+                    }
+                }
+            });
+
+
+
+        }
+    };
 
 }

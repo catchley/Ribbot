@@ -10,7 +10,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.FindCallback;
@@ -25,6 +28,7 @@ import com.parse.SaveCallback;
 import java.util.ArrayList;
 import java.util.List;
 
+import atchley.chris.ribbot.adapters.UserAdapter;
 import atchley.chris.ribbot.utils.FileHelper;
 import atchley.chris.ribbot.utils.ParseConstants;
 import atchley.chris.ribbot.R;
@@ -36,19 +40,24 @@ public class RecipientsActivity extends AppCompatActivity {
     protected List<ParseUser> mFriends;
     protected ParseRelation<ParseUser> mFriendsRelation;
     protected ParseUser mCurrentUser;
-    public ListView myList;
     protected MenuItem mSendMenuItem;
     protected Uri mMediaUri;
     protected String mFileType;
+    protected GridView mGridView;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_recipients);
-        myList = (ListView)findViewById(R.id.recipientsList);
-        myList.setEmptyView(findViewById(R.id.empty_view));
-        myList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        setContentView(R.layout.user_grid);
+
+        mGridView = (GridView)findViewById(R.id.friendsGrid);
+        mGridView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        mGridView.setOnItemClickListener(mOnItemClickListener);
+
+        TextView emptyTextView = (TextView) findViewById(android.R.id.empty);
+        mGridView.setEmptyView(emptyTextView);
+
         mMediaUri = getIntent().getData();
         mFileType= getIntent().getExtras().getString(ParseConstants.KEY_FILE_TYPE);
     }
@@ -86,21 +95,17 @@ public class RecipientsActivity extends AppCompatActivity {
                     }
 
 
-                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(myList.getContext(),
-                            android.R.layout.simple_list_item_checked,
-                            usernames);
-                    myList.setAdapter(adapter);
-                    myList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            if(myList.getCheckedItemCount()>0) {
-                                mSendMenuItem.setVisible(true);
-                            }
-                            else{
-                                mSendMenuItem.setVisible(false);
-                            }
-                        }
-                    });
+                    if (mGridView.getAdapter() == null) {
+                        UserAdapter adapter = new UserAdapter(RecipientsActivity.this, mFriends);
+
+                        mGridView.setAdapter(adapter);
+                    } else {
+                        ((UserAdapter) mGridView.getAdapter()).refill(mFriends);
+
+                    }
+
+
+
 
                 } else {
 
@@ -173,8 +178,8 @@ public class RecipientsActivity extends AppCompatActivity {
 
     protected ArrayList<String> getRecipientIds(){
         ArrayList<String> recipientIds = new ArrayList<String>();
-        for(int i=0; i< myList.getCount();i++){
-            if(myList.isItemChecked(i)){
+        for(int i=0; i< mGridView.getCount();i++){
+            if(mGridView.isItemChecked(i)){
                 recipientIds.add(mFriends.get(i).getObjectId());
             }
 
@@ -203,6 +208,30 @@ public class RecipientsActivity extends AppCompatActivity {
         });
 
     }
+
+    protected AdapterView.OnItemClickListener mOnItemClickListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+
+                    if(mGridView.getCheckedItemCount()>0) {
+                        mSendMenuItem.setVisible(true);
+                    }
+                    else{
+                        mSendMenuItem.setVisible(false);
+                    }
+
+            ImageView checkImageView  =(ImageView)view.findViewById(R.id.checkImageView);
+            if (mGridView.isItemChecked(position)) {
+                //add recipient
+                checkImageView.setVisibility(view.VISIBLE);
+            } else {
+                //remove recipient
+                checkImageView.setVisibility(view.INVISIBLE);
+            }
+
+        }
+    };
 
 
 }
